@@ -23,45 +23,49 @@ var lobbies = {
 
 io.sockets.on('connection', function(socket) {
 
-    socket.on('join_room', function(roomID) {
-    		var lobby = lobbies[roomID];
-    		if (!lobby) {
-    			socket.emit('lobby_not_exist');
-    			return;
-    		}
+		socket.on('join_room', function(roomID) {
+				var lobby = lobbies[roomID];
+				if (!lobby) {
+					socket.emit('lobby_not_exist');
+					return;
+				}
 
-  			lobby.addPlayer(socket.id);
-  			socket.emit('lobby_joined', {players: lobby.players});
+				lobby.addPlayer(socket.id);
+				socket.emit('lobby_joined', {players: lobby.players});
 
-        socket.join(roomID);
-        io.sockets.in(roomID).emit('update_game', {
-        	players: lobby.players,
-        	candy: lobby.candy
-        });
+				socket.join(roomID);
+				io.sockets.in(roomID).emit('update_game', {
+					players: lobby.players,
+					candy: lobby.candy
+				});
 
-        socket.on('disconnect', function() {
-    			lobby.removePlayer(socket.id);
-    			io.sockets.in(roomID).emit('update_game', {
-	        	players: lobby.players,
-	        	candy: lobby.candy
-	        });
+				socket.on('disconnect', function() {
+					lobby.removePlayer(socket.id);
+					io.sockets.in(roomID).emit('update_game', {
+						players: lobby.players,
+						candy: lobby.candy
+					});
+					if (Object.keys(lobby.players).length < lobby.config.minPlayers) {
+						lobby.stop();
+						io.sockets.in(roomID).emit('game_end');
+					}
 				});
 
 				socket.on('lobby_start', function() {
-    			if (Object.keys(lobby.players).length >= lobby.config.minPlayers) {
-  					lobby.start();
-  					io.sockets.in(roomID).emit('game_start');
-  				}
+					if (Object.keys(lobby.players).length >= lobby.config.minPlayers) {
+						lobby.start();
+						io.sockets.in(roomID).emit('game_start');
+					}
 				});
 
-        socket.on('new_direction', function(direction) {
-        	lobby.players[socket.id].direction = direction;
-       		io.sockets.in(roomID).emit('update_game', {
-	        	players: lobby.players,
-	        	candy: lobby.candy
-	        });
-        });
-    });
+				socket.on('new_direction', function(direction) {
+					lobby.players[socket.id].direction = direction;
+					io.sockets.in(roomID).emit('update_game', {
+						players: lobby.players,
+						candy: lobby.candy
+					});
+				});
+		});
 
 });
 

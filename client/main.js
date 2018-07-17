@@ -1,29 +1,29 @@
-var game = new SnakeGame();
-
-window.onkeydown = function(event) {
-	game.snake.newDirection = {
-		37: -1, // left arrow
-		39: 1, // right arrow
-		38: -2, // up arrow
-		40: 2, // down arrow,
-		32: 3 // spacebar (to stop) - temp
-	}[event.keyCode] || game.snake.newDirection;
-
-	game.socket.emit('new_direction', game.snake.newDirection);
-}
+var viewManager = new ViewManager();
 
 window.onload = function() {
 	init();
 }
 
 function init() {
+	var game = new SnakeGame();
+	viewManager.init();
+
+	window.onkeydown = function(event) {
+		game.snake.newDirection = {
+			37: -1, // left arrow
+			39: 1, // right arrow
+			38: -2, // up arrow
+			40: 2, // down arrow,
+			32: 3 // spacebar (to stop) - temp
+		}[event.keyCode] || game.snake.newDirection;
+
+		game.socket.emit('new_direction', game.snake.newDirection);
+	}
+
 	var urlParams = getAllUrlParams(window.location.href);
 	var socket = io.connect();
 	game.socket = socket;
 	var roomID = urlParams.lobby;
-
-	var playerListContainer = document.getElementById('player-list-container');
-	var playerListElem = document.getElementById('player-list');
 
 	if (roomID) {
 		socket.on('connect', function() {
@@ -36,13 +36,24 @@ function init() {
 			console.log(data);
 			game.data = data;
 
-			var startGameButton = document.getElementById('start-game-button');
-			startGameButton.onclick = function() {
+			viewManager.hideGameView(data);
+			viewManager.showLobbyView(data);
+
+			viewManager.startGameButton.onclick = function() {
 				socket.emit('lobby_start');
 			}
 
 			socket.on('game_start', function() {
-				startGameButton.innerHTML = 'Restart game';
+				console.log('Game start!');
+				viewManager.hideLobbyView();
+				viewManager.showGameView();
+				game.init();
+			});
+
+			socket.on('game_end', function() {
+				console.log('Game end!');
+				viewManager.showLobbyView();
+				viewManager.hideGameView();
 				game.init();
 			});
 		});
@@ -52,15 +63,8 @@ function init() {
 		});
 
 		socket.on('update_game', function(data) {
-			playerListElem.innerHTML = '';
-			for (var playerIndex in data.players) {
-				var player = data.players[playerIndex];
-				var playerElem = document.createElement('h2');
-				playerElem.innerHTML = playerIndex;
-				playerElem.style.color = player.color;
-				playerListElem.appendChild(playerElem);
-			}
-			game.updateSnakes(data);
+			viewManager.updateLobbyData(data);
+			game.updateData(data);
 		});
 	}
 }
