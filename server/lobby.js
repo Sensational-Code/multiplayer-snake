@@ -37,8 +37,8 @@ class Lobby {
 	addPlayer(playerID) {
 		this.players[playerID] = {
 			blocks: [{
-				x: helpers.randomIntBetween(0, this.board.width),
-				y: helpers.randomIntBetween(0, this.board.height)
+				x: helpers.randomIntBetween(0, this.board.width-1),
+				y: helpers.randomIntBetween(0, this.board.height-1)
 			}],
 			length: 1,
 			direction: 0,
