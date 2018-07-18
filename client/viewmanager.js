@@ -19,20 +19,14 @@ ViewManager.prototype = {
 		this.gameView = document.getElementById('game-view');
 	},
 
-	hideLobbyView: function() {
-		this.lobbyView.style.display = 'none';
-	},
-
 	showLobbyView: function() {
 		this.lobbyView.style.display = '';
-	},
-
-	hideGameView: function() {
 		this.gameView.style.display = 'none';
 	},
 
 	showGameView: function() {
 		this.gameView.style.display = '';
+		this.lobbyView.style.display = 'none';
 	},
 
 	updateLobbyData: function(data) {

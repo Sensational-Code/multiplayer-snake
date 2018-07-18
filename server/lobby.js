@@ -99,7 +99,8 @@ class Lobby {
 
 		this.io.sockets.in(this.id).emit('update_game', {
 			players: this.players,
-			candy: this.candy
+			candy: this.candy,
+			inGame: this.inGame
 		});
 	}
 }

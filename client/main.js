@@ -34,10 +34,15 @@ function init() {
 		socket.on('lobby_joined', function(data) {
 			console.log('LOBBY JOINED => ' + data);
 			console.log(data);
-			game.data = data;
+			game.updateData(data);
 
-			viewManager.hideGameView(data);
-			viewManager.showLobbyView(data);
+			// if the game is in progress, just add this player straight into to the game
+			if (data.inGame) {
+				viewManager.showGameView();
+			}
+			else {
+				viewManager.showLobbyView();
+			}
 
 			viewManager.startGameButton.onclick = function() {
 				socket.emit('lobby_start');
@@ -45,7 +50,6 @@ function init() {
 
 			socket.on('game_start', function() {
 				console.log('Game start!');
-				viewManager.hideLobbyView();
 				viewManager.showGameView();
 				game.init();
 			});
@@ -53,13 +57,16 @@ function init() {
 			socket.on('game_end', function() {
 				console.log('Game end!');
 				viewManager.showLobbyView();
-				viewManager.hideGameView();
 				game.init();
 			});
 		});
 
 		socket.on('lobby_not_exist', function(data) {
 			console.log('LOBBY DOES NOT EXIST');
+			document.write('This lobby doesn\'t exist');
+			setTimeout(function() {
+				window.location = '/'
+			}, 1500);
 		});
 
 		socket.on('update_game', function(data) {
