@@ -60,7 +60,10 @@ Snake.prototype = {
 	},
 
 	render: function(context) {
-		var blockSize = this.board.blockSize;
+		var boardX = this.board.x,
+				boardY = this.board.y,
+				blockSize = this.board.blockSize;
+
 		var green = 0;
 		context.fillStyle = 'rgb(151, 225, ' + green + ')';
 		for (var i = 0; i < this.blocks.length; ++i) {
@@ -69,7 +72,7 @@ Snake.prototype = {
 
 			var block = this.blocks[i];
 			context.fillStyle = 'rgb(151, 225, ' + green + ')';
-			fillRoundedRect(context, block.x * blockSize, block.y * blockSize, blockSize, blockSize, 8);
+			helpers.fillRoundedRect(context, block.x * blockSize + boardX, block.y * blockSize + boardY, blockSize, blockSize, 8);
 		}
 	}
 }

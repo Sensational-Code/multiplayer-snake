@@ -1,28 +1,14 @@
 var viewManager = new ViewManager();
 
-window.onload = function() {
+window.addEventListener('load', function(event) {
 	init();
-}
+});
 
 function init() {
 	var game = new SnakeGame();
 	viewManager.init();
-
-	window.onkeydown = function(event) {
-		game.snake.newDirection = {
-			37: -1, // left arrow
-			39: 1, // right arrow
-			38: -2, // up arrow
-			40: 2, // down arrow,
-			32: 3 // spacebar (to stop) - temp
-		}[event.keyCode] || game.snake.newDirection;
-
-		game.socket.emit('new_direction', game.snake.newDirection);
-	}
-
-	var urlParams = getAllUrlParams(window.location.href);
+	var urlParams = helpers.getAllUrlParams(window.location.href);
 	var socket = io.connect();
-	game.socket = socket;
 	var roomID = urlParams.lobby;
 
 	if (roomID) {
@@ -39,6 +25,7 @@ function init() {
 			// if the game is in progress, just add this player straight into to the game
 			if (data.inGame) {
 				viewManager.showGameView();
+				game.init(socket);
 			}
 			else {
 				viewManager.showLobbyView();
@@ -51,13 +38,12 @@ function init() {
 			socket.on('game_start', function() {
 				console.log('Game start!');
 				viewManager.showGameView();
-				game.init();
+				game.init(socket);
 			});
 
 			socket.on('game_end', function() {
 				console.log('Game end!');
 				viewManager.showLobbyView();
-				game.init();
 			});
 		});
 
