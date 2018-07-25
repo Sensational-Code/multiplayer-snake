@@ -16,8 +16,16 @@
 </head>
 <body>
 
+	<!-- Element that contains all elements for home page -->
+	<div id="home-view">
+		<input id="player-name" type="text">
+		<button onclick="window.location='/?lobby=abc123'">Play</button>
+		<button disabled>Create Lobby</button>
+		<button disabled>Join Lobby</button>
+	</div>
+
 	<!-- Element that contains all elements for lobby page -->
-	<div id="lobby-view">
+	<div id="lobby-view" style="display:none">
 		<div id="player-list-container">
 			<h2>Players in lobby:</h2>
 			<div id="player-list"></div>

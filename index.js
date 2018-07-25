@@ -6,11 +6,7 @@ const io = require('socket.io')(server);
 const Lobby = require('./server/lobby.js');
 
 app.get('/', function (request, response) {
-	if (request.query.lobby) {
-		response.sendFile(__dirname + '/client/index.html');
-	} else {
-		response.sendFile(__dirname + '/views/home.html');
-	}
+	response.sendFile(__dirname + '/client/index.html');
 });
 
 app.use('/client/', express.static(__dirname + '/client/'));

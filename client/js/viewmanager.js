@@ -11,6 +11,8 @@ function ViewManager() {
 
 ViewManager.prototype = {
 	init: function() {
+		this.homeView = document.getElementById('home-view');
+
 		this.lobbyView = document.getElementById('lobby-view');
 		this.playerListContainer = document.getElementById('player-list-container');
 		this.playerListElem = document.getElementById('player-list');
@@ -19,12 +21,20 @@ ViewManager.prototype = {
 		this.gameView = document.getElementById('game-view');
 	},
 
+	showHomeView: function() {
+		this.homeView.style.display = '';
+		this.lobbyView.style.display = 'none';
+		this.gameView.style.display = 'none';
+	},
+
 	showLobbyView: function() {
+		this.homeView.style.display = 'none';
 		this.lobbyView.style.display = '';
 		this.gameView.style.display = 'none';
 	},
 
 	showGameView: function() {
+		this.homeView.style.display = 'none';
 		this.gameView.style.display = '';
 		this.lobbyView.style.display = 'none';
 	},
