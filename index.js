@@ -34,7 +34,7 @@ io.sockets.on('connection', function(socket) {
 
 		io.sockets.in(roomID).emit('update_game', {
 			players: lobby.players,
-			candy: lobby.candy,
+			candy: lobby.game.candy,
 			inGame: lobby.inGame
 		});
 
@@ -46,7 +46,7 @@ io.sockets.on('connection', function(socket) {
 			} else {
 				io.sockets.in(roomID).emit('update_game', {
 					players: lobby.players,
-					candy: lobby.candy,
+					candy: lobby.game.candy,
 					inGame: this.inGame
 				});
 				if (Object.keys(lobby.players).length < lobby.config.minPlayers) {
@@ -67,7 +67,7 @@ io.sockets.on('connection', function(socket) {
 			lobby.players[socket.id].direction = direction;
 			io.sockets.in(roomID).emit('update_game', {
 				players: lobby.players,
-				candy: lobby.candy,
+				candy: lobby.game.candy,
 				inGame: lobby.inGame
 			});
 		});
