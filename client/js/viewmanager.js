@@ -12,6 +12,10 @@ function ViewManager() {
 ViewManager.prototype = {
 	init: function() {
 		this.homeView = document.getElementById('home-view');
+		this.playButton = document.getElementById('play-button');
+		this.createButton = document.getElementById('create-button');
+		this.joinButton = document.getElementById('join-button');
+		this.joinInput = document.getElementById('join-input');
 
 		this.lobbyView = document.getElementById('lobby-view');
 		this.playerListContainer = document.getElementById('player-list-container');

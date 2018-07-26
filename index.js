@@ -3,7 +3,9 @@ const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 
+const LobbyManager = require('./server/lobbymanager.js')(io);
 const Lobby = require('./server/lobby.js');
+
 
 app.get('/', function (request, response) {
 	response.sendFile(__dirname + '/client/index.html');
@@ -12,62 +14,94 @@ app.get('/', function (request, response) {
 app.use('/client/', express.static(__dirname + '/client/'));
 
 
-// no create room for now, just have one room and only have people join it
-var lobbies = {
-	'abc123': new Lobby('abc123', io)
-};
 
 io.sockets.on('connection', function(socket) {
 
-		socket.on('join_room', function(roomID) {
-				var lobby = lobbies[roomID];
-				if (!lobby) {
-					socket.emit('lobby_not_exist');
-					return;
-				}
+	var joinLobby = function(roomID) {
+		var lobby = LobbyManager.getLobby(roomID);
+		if (!lobby) {
+			socket.emit('lobby_not_exist');
+			return;
+		}
 
-				lobby.addPlayer(socket.id);
-				socket.emit('lobby_joined', {
-					players: lobby.players,
-					inGame: lobby.inGame
-				});
+		lobby.addPlayer(socket.id);
+		socket.join(roomID);
 
-				socket.join(roomID);
+		socket.emit('lobby_joined', {
+			players: lobby.players,
+			inGame: lobby.inGame
+		});
+
+		io.sockets.in(roomID).emit('update_game', {
+			players: lobby.players,
+			candy: lobby.candy,
+			inGame: lobby.inGame
+		});
+
+		socket.on('disconnect', function() {
+			lobby.removePlayer(socket.id);
+			if (Object.keys(lobby.players).length < 1) {
+				console.log(`Lobby ${lobby.id} is empty`);
+				LobbyManager.removeLobby(lobby.id);
+			} else {
 				io.sockets.in(roomID).emit('update_game', {
 					players: lobby.players,
 					candy: lobby.candy,
 					inGame: this.inGame
 				});
-
-				socket.on('disconnect', function() {
-					lobby.removePlayer(socket.id);
-					io.sockets.in(roomID).emit('update_game', {
-						players: lobby.players,
-						candy: lobby.candy,
-						inGame: this.inGame
-					});
-					if (Object.keys(lobby.players).length < lobby.config.minPlayers) {
-						lobby.stop();
-						io.sockets.in(roomID).emit('game_end');
-					}
-				});
-
-				socket.on('lobby_start', function() {
-					if (Object.keys(lobby.players).length >= lobby.config.minPlayers) {
-						lobby.start();
-						io.sockets.in(roomID).emit('game_start');
-					}
-				});
-
-				socket.on('new_direction', function(direction) {
-					lobby.players[socket.id].direction = direction;
-					io.sockets.in(roomID).emit('update_game', {
-						players: lobby.players,
-						candy: lobby.candy,
-						inGame: this.inGame
-					});
-				});
+				if (Object.keys(lobby.players).length < lobby.config.minPlayers) {
+					lobby.stop();
+					io.sockets.in(roomID).emit('game_end');
+				}
+			}
 		});
+
+		socket.on('lobby_start', function() {
+			if (Object.keys(lobby.players).length >= lobby.config.minPlayers) {
+				lobby.start();
+				io.sockets.in(roomID).emit('game_start');
+			}
+		});
+
+		socket.on('new_direction', function(direction) {
+			lobby.players[socket.id].direction = direction;
+			io.sockets.in(roomID).emit('update_game', {
+				players: lobby.players,
+				candy: lobby.candy,
+				inGame: lobby.inGame
+			});
+		});
+	}
+
+	socket.on('create_lobby', function() {
+		var lobby = LobbyManager.createLobby();
+		joinLobby(lobby.id);
+	});
+
+	socket.on('join_any_lobby', function() {
+		// If there aren't any lobbies to join, create a new one
+		if (Object.keys(LobbyManager.lobbies).length < 1) {
+			let lobby = LobbyManager.createLobby();
+			socket.emit('found_lobby', lobby.id);
+		} else {
+			let bestLobby = null;
+			// Loop through each lobby to find the lobby that is the most full
+			for (prop in LobbyManager.lobbies) {
+				let lobby = LobbyManager.lobbies[prop];
+				// If the lobby has space and is more full
+				if (lobby.playerSpace > 0 && lobby.playerSpace < (!!bestLobby ? bestLobby.playerSpace : Infinity)) {
+					bestLobby = lobby;
+				}
+			}
+			// If we didn't find a suitable lobby, create a new one
+			if (!bestLobby) {
+				bestLobby = LobbyManager.createLobby();
+			}
+			socket.emit('found_lobby', bestLobby.id);
+		}
+	});
+
+	socket.on('join_lobby', joinLobby);
 
 });
 

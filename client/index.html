@@ -19,9 +19,10 @@
 	<!-- Element that contains all elements for home page -->
 	<div id="home-view">
 		<input id="player-name" type="text">
-		<button onclick="window.location='/?lobby=abc123'">Play</button>
-		<button disabled>Create Lobby</button>
-		<button disabled>Join Lobby</button>
+		<button id="play-button" onclick="window.location='/?lobby=abc123'">Play</button>
+		<button id="create-button">Create Lobby</button>
+		<input id="join-input" type="text">
+		<button id="join-button">Join Lobby</button>
 	</div>
 
 	<!-- Element that contains all elements for lobby page -->

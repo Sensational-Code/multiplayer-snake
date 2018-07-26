@@ -44,12 +44,17 @@ class Lobby {
 			direction: 0,
 			color: randomColor()
 		};
+		this.playerSpace = this.config.maxPlayers - Object.keys(this.players).length;
 		console.log('Player ' + playerID + ' joined lobby ' + this.id);
+		if (this.playerSpace < 1) {
+				console.log(`Lobby ${this.id} is full.`);
+		}
 	}
 
 	removePlayer(playerID) {
-		console.log('Player ' + playerID + ' left lobby ' + this.id);
 		delete this.players[playerID];
+		this.playerSpace = this.config.maxPlayers - Object.keys(this.players).length;
+		console.log('Player ' + playerID + ' left lobby ' + this.id);
 	}
 
 	start() {
