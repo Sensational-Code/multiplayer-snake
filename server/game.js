@@ -56,4 +56,4 @@ class Game {
 	}
 }
 
-module.exports = {Game: Game};
+module.exports = Game;

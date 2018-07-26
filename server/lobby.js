@@ -1,7 +1,7 @@
 const randomColor = require('randomcolor');
 const Gameboard = require('./gameboard.js');
 const Candy = require('./candy.js');
-const Game = require('./game.js').Game;
+const Game = require('./game.js');
 const helpers = require('./helpers.js');
 
 class Lobby {
