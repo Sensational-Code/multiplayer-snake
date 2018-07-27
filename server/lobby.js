@@ -1,7 +1,7 @@
-const randomColor = require('randomcolor');
 const Gameboard = require('./gameboard.js');
 const Candy = require('./candy.js');
 const Game = require('./game.js');
+const Player = require('./player.js');
 const helpers = require('./helpers.js');
 
 class Lobby {
@@ -25,15 +25,10 @@ class Lobby {
 	}
 
 	addPlayer(playerID) {
-		this.players[playerID] = {
-			blocks: [{
-				x: helpers.randomIntBetween(0, this.game.board.width-1),
-				y: helpers.randomIntBetween(0, this.game.board.height-1)
-			}],
-			length: 1,
-			direction: 0,
-			color: randomColor()
-		};
+		let player = new Player();
+		player.blocks[0].x = helpers.randomIntBetween(0, this.game.board.width-1);
+		player.blocks[0].y = helpers.randomIntBetween(0, this.game.board.height-1);
+		this.players[playerID] = player;
 		this.playerSpace = this.config.maxPlayers - Object.keys(this.players).length;
 		console.log('Player ' + playerID + ' joined lobby ' + this.id);
 		if (this.playerSpace < 1) {
