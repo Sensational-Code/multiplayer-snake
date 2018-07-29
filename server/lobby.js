@@ -9,17 +9,20 @@ class Lobby {
 		this.id = id;
 		this.io = io;
 
+		this.config = {
+			minPlayers: 2,
+			maxPlayers: 5
+		};
+
+		this.playerCount = 0;
+		this.hasEnoughPlayers = false;
+
 		this.players = {};
 		this.game = new Game();
 		this.game.players = this.players;
 
 		this.interval = null;
 		this.inGame = false;
-
-		this.config = {
-			minPlayers: 2,
-			maxPlayers: 5
-		};
 
 		return this;
 	}
@@ -29,17 +32,26 @@ class Lobby {
 		player.blocks[0].x = helpers.randomIntBetween(0, this.game.board.width-1);
 		player.blocks[0].y = helpers.randomIntBetween(0, this.game.board.height-1);
 		this.players[playerID] = player;
-		this.playerSpace = this.config.maxPlayers - Object.keys(this.players).length;
+		this.playerCount += 1;
+		this.playerSpace = this.config.maxPlayers - this.playerCount;
 		console.log('Player ' + playerID + ' joined lobby ' + this.id);
-		if (this.playerSpace < 1) {
+
+		if (this.playerCount >= this.config.minPlayers) {
+			this.hasEnoughPlayers = true;
+		} else if (this.playerSpace < 1) {
 				console.log(`Lobby ${this.id} is full.`);
 		}
 	}
 
 	removePlayer(playerID) {
 		delete this.players[playerID];
-		this.playerSpace = this.config.maxPlayers - Object.keys(this.players).length;
+		this.playerCount -= 1;
+		this.playerSpace = this.config.maxPlayers - this.playerCount;
 		console.log('Player ' + playerID + ' left lobby ' + this.id);
+
+		if (this.playerCount < this.config.minPlayers) {
+			this.hasEnoughPlayers = false;
+		}
 	}
 
 	start() {

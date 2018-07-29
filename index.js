@@ -51,7 +51,7 @@ function joinLobby(id) {
 
 function joinAnyLobby() {
 	// If there aren't any lobbies to join, create a new one
-	if (Object.keys(LobbyManager.lobbies).length < 1) {
+	if (LobbyManager.lobbyCount < 1) {
 		let lobby = LobbyManager.createLobby();
 		this.emit('found-lobby', lobby.id);
 	} else {
@@ -75,7 +75,7 @@ function joinAnyLobby() {
 function disconnect() {
 	var lobby = this.lobby;
 	lobby.removePlayer(this.id);
-	if (Object.keys(lobby.players).length < 1) {
+	if (lobby.playerCount < 1) {
 		console.log(`Lobby ${lobby.id} is empty`);
 		LobbyManager.removeLobby(lobby.id);
 	} else {
@@ -84,7 +84,7 @@ function disconnect() {
 			candy: lobby.game.candy,
 			inGame: lobby.inGame
 		});
-		if (Object.keys(lobby.players).length < lobby.config.minPlayers) {
+		if (!lobby.hasEnoughPlayers) {
 			lobby.stop();
 			io.sockets.in(lobby.id).emit('game-end');
 		}
@@ -93,7 +93,7 @@ function disconnect() {
 
 function lobbyStart() {
 	var lobby = this.lobby;
-	if (Object.keys(lobby.players).length >= lobby.config.minPlayers) {
+	if (lobby.hasEnoughPlayers) {
 		lobby.start();
 		io.sockets.in(lobby.id).emit('game-start');
 	}
