@@ -22,21 +22,21 @@ function createLobby() {
 function joinLobby(id) {
 	var lobby = LobbyManager.getLobby(id);
 	if (!lobby) {
-		this.emit('lobby_not_exist');
+		this.emit('lobby-not-exist');
 		return;
 	}
 
 	lobby.addPlayer(this.id);
 	this.join(id);
 
-	this.emit('lobby_joined', {
+	this.emit('lobby-joined', {
 		players: lobby.players,
 		inGame: lobby.inGame
 	});
 
 	this.lobby = lobby;
 
-	io.sockets.in(id).emit('update_game', {
+	io.sockets.in(id).emit('update-game', {
 		players: lobby.players,
 		candy: lobby.game.candy,
 		inGame: lobby.inGame
@@ -44,16 +44,16 @@ function joinLobby(id) {
 
 	this.on('disconnect', disconnect);
 
-	this.on('lobby_start', lobbyStart);
+	this.on('lobby-start', lobbyStart);
 
-	this.on('new_direction', newDirection);
+	this.on('new-direction', newDirection);
 }
 
 function joinAnyLobby() {
 	// If there aren't any lobbies to join, create a new one
 	if (Object.keys(LobbyManager.lobbies).length < 1) {
 		let lobby = LobbyManager.createLobby();
-		this.emit('found_lobby', lobby.id);
+		this.emit('found-lobby', lobby.id);
 	} else {
 		let bestLobby = null;
 		// Loop through each lobby to find the lobby that is the most full
@@ -68,7 +68,7 @@ function joinAnyLobby() {
 		if (!bestLobby) {
 			bestLobby = LobbyManager.createLobby();
 		}
-		this.emit('found_lobby', bestLobby.id);
+		this.emit('found-lobby', bestLobby.id);
 	}
 }
 
@@ -79,14 +79,14 @@ function disconnect() {
 		console.log(`Lobby ${lobby.id} is empty`);
 		LobbyManager.removeLobby(lobby.id);
 	} else {
-		io.sockets.in(lobby.id).emit('update_game', {
+		io.sockets.in(lobby.id).emit('update-game', {
 			players: lobby.players,
 			candy: lobby.game.candy,
 			inGame: lobby.inGame
 		});
 		if (Object.keys(lobby.players).length < lobby.config.minPlayers) {
 			lobby.stop();
-			io.sockets.in(lobby.id).emit('game_end');
+			io.sockets.in(lobby.id).emit('game-end');
 		}
 	}
 }
@@ -95,14 +95,14 @@ function lobbyStart() {
 	var lobby = this.lobby;
 	if (Object.keys(lobby.players).length >= lobby.config.minPlayers) {
 		lobby.start();
-		io.sockets.in(lobby.id).emit('game_start');
+		io.sockets.in(lobby.id).emit('game-start');
 	}
 }
 
 function newDirection(direction) {
 	var lobby = this.lobby;
 	lobby.players[this.id].direction = direction;
-	io.sockets.in(this.lobby.id).emit('update_game', {
+	io.sockets.in(this.lobby.id).emit('update-game', {
 		players: lobby.players,
 		candy: lobby.game.candy,
 		inGame: lobby.inGame
@@ -112,11 +112,11 @@ function newDirection(direction) {
 
 io.sockets.on('connection', function(socket) {
 
-	socket.on('create_lobby', createLobby);
+	socket.on('create-lobby', createLobby);
 
-	socket.on('join_any_lobby', joinAnyLobby);
+	socket.on('join-any-lobby', joinAnyLobby);
 
-	socket.on('join_lobby', joinLobby);
+	socket.on('join-lobby', joinLobby);
 
 });
 

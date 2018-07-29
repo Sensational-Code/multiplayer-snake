@@ -17,21 +17,21 @@ function init() {
 	}
 
 	function joinAnyLobby() {
-		socket.emit('join_any_lobby', {});
-		socket.on('found_lobby', function(id) {
+		socket.emit('join-any-lobby', {});
+		socket.on('found-lobby', function(id) {
 			joinLobby(id);
 		});
 	}
 
 	function createLobby() {
-		socket.emit('create_lobby', {});
+		socket.emit('create-lobby', {});
 		socket.on('connect', function() {
 			console.log('io connected.');
 		});
 
-		socket.on('lobby_joined', handleLobbyJoined);
+		socket.on('lobby-joined', handleLobbyJoined);
 
-		socket.on('lobby_not_exist', function(data) {
+		socket.on('lobby-not-exist', function(data) {
 			console.log('LOBBY DOES NOT EXIST');
 			document.write('This lobby doesn\'t exist');
 			setTimeout(function() {
@@ -39,7 +39,7 @@ function init() {
 			}, 1500);
 		});
 
-		socket.on('update_game', function(data) {
+		socket.on('update-game', function(data) {
 			console.log('update game')
 			viewManager.updateLobbyData(data);
 			game.updateData(data);
@@ -47,14 +47,14 @@ function init() {
 	}
 
 	function joinLobby(id) {
-		socket.emit('join_lobby', id);
+		socket.emit('join-lobby', id);
 		socket.on('connect', function() {
 			console.log('io connected.');
 		});
 
-		socket.on('lobby_joined', handleLobbyJoined);
+		socket.on('lobby-joined', handleLobbyJoined);
 
-		socket.on('lobby_not_exist', function(data) {
+		socket.on('lobby-not-exist', function(data) {
 			console.log('LOBBY DOES NOT EXIST');
 			document.write('This lobby doesn\'t exist');
 			setTimeout(function() {
@@ -62,7 +62,7 @@ function init() {
 			}, 1500);
 		});
 
-		socket.on('update_game', function(data) {
+		socket.on('update-game', function(data) {
 			console.log('update game')
 			viewManager.updateLobbyData(data);
 			game.updateData(data);
@@ -101,10 +101,10 @@ function init() {
 		}
 
 		viewManager.startGameButton.onclick = function() {
-			socket.emit('lobby_start');
+			socket.emit('lobby-start');
 		}
 
-		socket.on('game_start', handleGameStart);
-		socket.on('game_end', handleGameEnd);
+		socket.on('game-start', handleGameStart);
+		socket.on('game-end', handleGameEnd);
 	}
 }

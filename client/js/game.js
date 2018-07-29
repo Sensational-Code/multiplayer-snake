@@ -38,7 +38,7 @@ SnakeGame.prototype = {
 
 		console.log(this.socket);
 		
-		this.socket.emit('new_direction', this.snake.newDirection);
+		this.socket.emit('new-direction', this.snake.newDirection);
 	},
 
 	reset: function() {

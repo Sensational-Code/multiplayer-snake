@@ -55,7 +55,7 @@ class Lobby {
 
 	update() {
 		this.game.update();
-		this.io.sockets.in(this.id).emit('update_game', {
+		this.io.sockets.in(this.id).emit('update-game', {
 			players: this.players,
 			candy: this.game.candy,
 			inGame: this.inGame
