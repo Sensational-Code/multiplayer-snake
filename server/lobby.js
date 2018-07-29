@@ -32,7 +32,11 @@ class Lobby {
 		this.players[player.id] = player;
 		this.playerCount += 1;
 		this.playerSpace = this.config.maxPlayers - this.playerCount;
-		console.log('Player ' + player.id + ' joined lobby ' + this.id);
+
+		if (this.playerCount === 1) {
+			player.isHost = true;
+		}
+		console.log(`Player ${player.id} (${player.isHost ? 'host' : 'player'}) joined lobby ${this.id}`);
 
 		if (this.playerCount >= this.config.minPlayers) {
 			this.hasEnoughPlayers = true;
@@ -42,10 +46,17 @@ class Lobby {
 	}
 
 	removePlayer(playerID) {
+		let playerWasHost = this.players[playerID].isHost;
 		delete this.players[playerID];
 		this.playerCount -= 1;
 		this.playerSpace = this.config.maxPlayers - this.playerCount;
 		console.log('Player ' + playerID + ' left lobby ' + this.id);
+
+		if (this.playerCount >= 1 && playerWasHost) {
+			let nextPlayer = this.players[Object.keys(this.players)[0]];
+			nextPlayer.isHost = true;
+			console.log(`Player ${nextPlayer.id} was changed to host of lobby ${this.id}`);
+		}
 
 		if (this.playerCount < this.config.minPlayers) {
 			this.hasEnoughPlayers = false;

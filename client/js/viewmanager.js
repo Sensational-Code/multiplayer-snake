@@ -51,7 +51,7 @@ ViewManager.prototype = {
 		for (var playerIndex in data.players) {
 			var player = data.players[playerIndex];
 			var playerElem = document.createElement('h2');
-			playerElem.innerHTML = player.name;
+			playerElem.innerHTML = player.name + (player.isHost ? ' (host)' : '');
 			playerElem.style.color = player.color;
 			playerListElem.appendChild(playerElem);
 		}

@@ -98,7 +98,7 @@ function disconnect() {
 
 function lobbyStart() {
 	var lobby = this.lobby;
-	if (lobby.hasEnoughPlayers) {
+	if (this.player.isHost && lobby.hasEnoughPlayers) {
 		lobby.startGame();
 		io.sockets.in(lobby.id).emit('game-start');
 	}

@@ -56,6 +56,9 @@ function init() {
 			console.log('update game')
 			viewManager.updateLobbyData(data);
 			game.updateData(data);
+			if (data.players[socket.id].isHost) {
+				viewManager.startGameButton.disabled = false;
+			}
 		});
 	}
 
