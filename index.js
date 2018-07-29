@@ -85,7 +85,7 @@ function disconnect() {
 			inGame: lobby.inGame
 		});
 		if (!lobby.hasEnoughPlayers) {
-			lobby.stop();
+			lobby.stopGame();
 			io.sockets.in(lobby.id).emit('game-end');
 		}
 	}
@@ -94,7 +94,7 @@ function disconnect() {
 function lobbyStart() {
 	var lobby = this.lobby;
 	if (lobby.hasEnoughPlayers) {
-		lobby.start();
+		lobby.startGame();
 		io.sockets.in(lobby.id).emit('game-start');
 	}
 }

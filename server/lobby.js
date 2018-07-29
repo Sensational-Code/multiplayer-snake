@@ -55,13 +55,13 @@ class Lobby {
 		}
 	}
 
-	start() {
+	startGame() {
 		this.inGame = true;
 		this.game.replaceCandy();
 		this.interval = setInterval(this.update.bind(this), 80);
 	}
 
-	stop() {
+	stopGame() {
 		this.inGame = false;
 		clearInterval(this.interval);
 	}
