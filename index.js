@@ -16,7 +16,7 @@ app.use('/client/', express.static(__dirname + '/client/'));
 
 function createLobby() {
 	var lobby = LobbyManager.createLobby();
-	joinLobby(lobby.id);
+	joinLobby.bind(this, lobby.id)();
 }
 
 function joinLobby(id) {
