@@ -15,6 +15,7 @@ class Lobby {
 		};
 
 		this.playerCount = 0;
+		this.playerSpace = this.config.maxPlayers;
 		this.hasEnoughPlayers = false;
 
 		this.players = {};
