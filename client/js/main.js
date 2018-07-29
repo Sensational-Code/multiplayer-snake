@@ -25,29 +25,15 @@ function init() {
 
 	function createLobby() {
 		socket.emit('create-lobby', {});
-		socket.on('connect', function() {
-			console.log('io connected.');
-		});
-
-		socket.on('lobby-joined', handleLobbyJoined);
-
-		socket.on('lobby-not-exist', function(data) {
-			console.log('LOBBY DOES NOT EXIST');
-			document.write('This lobby doesn\'t exist');
-			setTimeout(function() {
-				window.location = '/'
-			}, 1500);
-		});
-
-		socket.on('update-game', function(data) {
-			console.log('update game')
-			viewManager.updateLobbyData(data);
-			game.updateData(data);
-		});
+		onLobbyJoined();
 	}
 
 	function joinLobby(id) {
 		socket.emit('join-lobby', id);
+		onLobbyJoined();
+	}
+
+	function onLobbyJoined() {
 		socket.on('connect', function() {
 			console.log('io connected.');
 		});
