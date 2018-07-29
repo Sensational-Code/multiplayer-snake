@@ -3,7 +3,7 @@ const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 
-const LobbyManager = require('./server/lobbymanager.js')(io);
+const lobbyManager = require('./server/lobbymanager.js')(io);
 const Lobby = require('./server/lobby.js');
 
 
@@ -15,12 +15,12 @@ app.use('/client/', express.static(__dirname + '/client/'));
 
 
 function createLobby() {
-	var lobby = LobbyManager.createLobby();
+	var lobby = lobbyManager.createLobby();
 	joinLobby.bind(this, lobby.id)();
 }
 
 function joinLobby(id) {
-	var lobby = LobbyManager.getLobby(id);
+	var lobby = lobbyManager.getLobby(id);
 	if (!lobby) {
 		this.emit('lobby-not-exist');
 		return;
@@ -51,14 +51,14 @@ function joinLobby(id) {
 
 function joinAnyLobby() {
 	// If there aren't any lobbies to join, create a new one
-	if (LobbyManager.lobbyCount < 1) {
-		let lobby = LobbyManager.createLobby();
+	if (lobbyManager.lobbyCount < 1) {
+		let lobby = lobbyManager.createLobby();
 		this.emit('found-lobby', lobby.id);
 	} else {
 		let bestLobby = null;
 		// Loop through each lobby to find the lobby that is the most full
-		for (prop in LobbyManager.lobbies) {
-			let lobby = LobbyManager.lobbies[prop];
+		for (prop in lobbyManager.lobbies) {
+			let lobby = lobbyManager.lobbies[prop];
 			// If the lobby has space and is more full
 			if (lobby.playerSpace > 0 && lobby.playerSpace < (!!bestLobby ? bestLobby.playerSpace : Infinity)) {
 				bestLobby = lobby;
@@ -66,7 +66,7 @@ function joinAnyLobby() {
 		}
 		// If we didn't find a suitable lobby, create a new one
 		if (!bestLobby) {
-			bestLobby = LobbyManager.createLobby();
+			bestLobby = lobbyManager.createLobby();
 		}
 		this.emit('found-lobby', bestLobby.id);
 	}
@@ -77,7 +77,7 @@ function disconnect() {
 	lobby.removePlayer(this.id);
 	if (lobby.playerCount < 1) {
 		console.log(`Lobby ${lobby.id} is empty`);
-		LobbyManager.removeLobby(lobby.id);
+		lobbyManager.removeLobby(lobby.id);
 	} else {
 		io.sockets.in(lobby.id).emit('update-game', {
 			players: lobby.players,
