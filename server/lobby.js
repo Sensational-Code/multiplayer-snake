@@ -28,14 +28,11 @@ class Lobby {
 		return this;
 	}
 
-	addPlayer(playerID) {
-		let player = new Player();
-		player.blocks[0].x = helpers.randomIntBetween(0, this.game.board.width-1);
-		player.blocks[0].y = helpers.randomIntBetween(0, this.game.board.height-1);
-		this.players[playerID] = player;
+	addPlayer(player) {
+		this.players[player.id] = player;
 		this.playerCount += 1;
 		this.playerSpace = this.config.maxPlayers - this.playerCount;
-		console.log('Player ' + playerID + ' joined lobby ' + this.id);
+		console.log('Player ' + player.id + ' joined lobby ' + this.id);
 
 		if (this.playerCount >= this.config.minPlayers) {
 			this.hasEnoughPlayers = true;

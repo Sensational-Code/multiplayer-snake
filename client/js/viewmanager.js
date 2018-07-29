@@ -12,6 +12,7 @@ function ViewManager() {
 ViewManager.prototype = {
 	init: function() {
 		this.homeView = document.getElementById('home-view');
+		this.playerName = document.getElementById('player-name');
 		this.playButton = document.getElementById('play-button');
 		this.createButton = document.getElementById('create-button');
 		this.joinButton = document.getElementById('join-button');
@@ -50,7 +51,7 @@ ViewManager.prototype = {
 		for (var playerIndex in data.players) {
 			var player = data.players[playerIndex];
 			var playerElem = document.createElement('h2');
-			playerElem.innerHTML = playerIndex;
+			playerElem.innerHTML = player.name;
 			playerElem.style.color = player.color;
 			playerListElem.appendChild(playerElem);
 		}

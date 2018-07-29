@@ -6,14 +6,15 @@ window.addEventListener('load', function(event) {
 
 function init() {
 	var game = new SnakeGame();
-	var urlParams = helpers.getAllUrlParams(window.location.href);
 	var socket = io.connect();
-	var roomID = urlParams.lobby;
+
+	var urlParams = helpers.getAllUrlParams(window.location.href);
+	var lobbyId = urlParams.lobby;
 
 	viewManager.init();
 
-	if (roomID) {
-		joinLobby(roomID);
+	if (lobbyId) {
+		joinLobby(lobbyId);
 	}
 
 	function joinAnyLobby() {
@@ -24,20 +25,23 @@ function init() {
 	}
 
 	function createLobby() {
-		socket.emit('create-lobby', {});
+		var playerName = viewManager.playerName.value;
+		socket.emit('create-lobby', {
+			playerName: playerName
+		});
 		onLobbyJoined();
 	}
 
 	function joinLobby(id) {
-		socket.emit('join-lobby', id);
+		var playerName = viewManager.playerName.value;
+		socket.emit('join-lobby', {
+			playerName: playerName,
+			id: id
+		});
 		onLobbyJoined();
 	}
 
 	function onLobbyJoined() {
-		socket.on('connect', function() {
-			console.log('io connected.');
-		});
-
 		socket.on('lobby-joined', handleLobbyJoined);
 
 		socket.on('lobby-not-exist', function(data) {

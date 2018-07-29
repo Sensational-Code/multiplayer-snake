@@ -5,7 +5,7 @@ const io = require('socket.io')(server);
 
 const lobbyManager = require('./server/lobbymanager.js')(io);
 const Lobby = require('./server/lobby.js');
-
+const Player = require('./server/player.js');
 
 app.get('/', function (request, response) {
 	response.sendFile(__dirname + '/client/index.html');
@@ -14,19 +14,24 @@ app.get('/', function (request, response) {
 app.use('/client/', express.static(__dirname + '/client/'));
 
 
-function createLobby() {
+function createLobby(data) {
 	var lobby = lobbyManager.createLobby();
-	joinLobby.bind(this, lobby.id)();
+	data.id = lobby.id;
+	joinLobby.bind(this, data)();
 }
 
-function joinLobby(id) {
+function joinLobby(data) {
+	let { id, playerName } = data;
 	var lobby = lobbyManager.getLobby(id);
 	if (!lobby) {
 		this.emit('lobby-not-exist');
 		return;
 	}
 
-	lobby.addPlayer(this.id);
+	if (playerName) {
+		this.player.name = playerName;
+	}
+	lobby.addPlayer(this.player);
 	this.join(id);
 
 	this.emit('lobby-joined', {
@@ -111,6 +116,8 @@ function newDirection(direction) {
 
 
 io.sockets.on('connection', function(socket) {
+
+	socket.player = new Player(socket.id);
 
 	socket.on('create-lobby', createLobby);
 

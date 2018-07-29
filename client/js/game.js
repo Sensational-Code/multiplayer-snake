@@ -75,12 +75,18 @@ SnakeGame.prototype = {
 
 		for (playerID in this.data.players) {
 			var player = this.data.players[playerID];
+
 			this.context.fillStyle = 'rgb(151, 225, 178)';
 			for (var i = 0; i < player.blocks.length; ++i) {
 				var block = player.blocks[i];
 				this.context.fillStyle = player.color;
 				helpers.fillRoundedRect(this.context, block.x * blockSize + boardX, block.y * blockSize + boardY, blockSize, blockSize, 8);
 			}
+
+			this.context.font = '15px Courier New';
+			this.context.fillStyle = 'black';
+			var textWidth = this.context.measureText(player.name).width;
+			this.context.fillText(player.name, (player.blocks[0].x * blockSize + boardX) + blockSize/2 - textWidth/2, player.blocks[0].y * blockSize + boardY - 5);
 		}
 	}
 }
