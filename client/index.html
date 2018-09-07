@@ -2,9 +2,8 @@
 <html>
 <head>
 	<title>Multiplayer Snake</title>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
-		
-	<script src="client/js/viewmanager.js"></script>
 
 	<script src="client/js/helpers.js"></script>
 	<script src="client/js/gameboard.js"></script>
@@ -15,29 +14,33 @@
 	<script src="client/js/main.js"></script>
 </head>
 <body>
+	<div id="app">
+		<!-- Element that contains all elements for home page -->
+		<template id="home-view" v-if="page === 'home-view'">
+			<input id="player-name" type="text" v-model="playerName">
+			<button ref="playButton" v-on:click="joinAnyLobby()">Play</button>
+			<button id="create-button" v-on:click="createLobby()">Create Lobby</button>
+			<input id="join-input" type="text" v-model="joinLobbyText">
+			<button id="join-button" v-on:click="joinLobby(joinLobbyText)">Join Lobby</button>
+		</template>
 
-	<!-- Element that contains all elements for home page -->
-	<div id="home-view">
-		<input id="player-name" type="text">
-		<button id="play-button" onclick="window.location='/?lobby=abc123'">Play</button>
-		<button id="create-button">Create Lobby</button>
-		<input id="join-input" type="text">
-		<button id="join-button">Join Lobby</button>
-	</div>
+		<!-- Element that contains all elements for lobby page -->
+		<template id="lobby-view" v-if="page === 'lobby-view'">
+			<div id="player-list-container">
+				<h2>Players in lobby:</h2>
+				<div ref="playerList" v-for="player in players">
+					<h2 v-bind:style="{ color: player.color }">
+						{{ player.name + (player.isHost ? ' (host)' : '') }}
+					</h2>
+				</div>
+				<button disabled ref="startGameButton" v-on:click="startLobby()">Start game</button>
+			</div>
+		</template>
 
-	<!-- Element that contains all elements for lobby page -->
-	<div id="lobby-view" style="display:none">
-		<div id="player-list-container">
-			<h2>Players in lobby:</h2>
-			<div id="player-list"></div>
-			<button disabled id="start-game-button">Start game</button>
-		</div>
+		<!-- Element that contains all elements for game page -->
+		<template id="game-view">
+			<canvas id="game-canvas" v-show="page === 'game-view'"></canvas>
+		</template>
 	</div>
-
-	<!-- Element that contains all elements for game page -->
-	<div id="game-view" style="display:none">
-		<canvas id="game-canvas"></canvas>
-	</div>
-	
 </body>
 </html>
