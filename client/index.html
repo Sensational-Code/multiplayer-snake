@@ -18,7 +18,7 @@
 		<!-- Element that contains all elements for home page -->
 		<template id="home-view" v-if="page === 'home-view'">
 			<input id="player-name" type="text" v-model="playerName">
-			<button ref="playButton" v-on:click="joinAnyLobby()">Play</button>
+			<button ref="playButton" v-on:click="joinAnyLobby()">Play!</button>
 			<button id="create-button" v-on:click="createLobby()">Create Lobby</button>
 			<input id="join-input" type="text" v-model="joinLobbyText">
 			<button id="join-button" v-on:click="joinLobby(joinLobbyText)">Join Lobby</button>
