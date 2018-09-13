@@ -88,6 +88,10 @@ function init() {
 	function handleGameEnd(data) {
 		console.log('Game end!');
 		app.page = 'lobby-view';
+		Vue.nextTick(function () {
+			app.updateLobbyData(data);
+			app.$refs.lobbyLink.value = window.location.href + '?lobby=' + data.lobbyID;
+		});
 	}
 
 	function handleLobbyJoined(data) {
@@ -104,6 +108,7 @@ function init() {
 			app.page = 'lobby-view';
 			Vue.nextTick(function () {
 				app.updateLobbyData(data);
+				app.$refs.lobbyLink.value = window.location.href + '?lobby=' + data.lobbyID;
 			});
 		}
 

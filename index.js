@@ -36,7 +36,8 @@ function joinLobby(data) {
 
 	this.emit('lobby-joined', {
 		players: lobby.players,
-		inGame: lobby.inGame
+		inGame: lobby.inGame,
+		lobbyID: id
 	});
 
 	this.lobby = lobby;
@@ -91,7 +92,11 @@ function disconnect() {
 		});
 		if (!lobby.hasEnoughPlayers) {
 			lobby.stopGame();
-			io.sockets.in(lobby.id).emit('game-end');
+			io.sockets.in(lobby.id).emit('game-end', {
+				players: lobby.players,
+				candy: lobby.game.candy,
+				lobbyID: lobby.id
+			});
 		}
 	}
 }
