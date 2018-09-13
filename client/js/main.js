@@ -43,7 +43,9 @@ function init() {
 				if (this.players[socket.id].isHost) {
 					this.$refs.startGameButton.disabled = false;
 				}
-				app.$refs.lobbyLink.value = window.location.href + '?lobby=' + data.lobbyID;
+				if (data.lobbyID) {
+					app.$refs.lobbyLink.value = window.location.href + '?lobby=' + data.lobbyID;
+				}
 			},
 
 			startLobby: function() {
