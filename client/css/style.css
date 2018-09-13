@@ -1,0 +1,16 @@
+html, body {
+	width: 100%;
+}
+
+.loginBox {
+	max-width: 50% !important;
+}
+
+.pad-vert {
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+.mar-left {
+	margin-left: 5px;
+}

@@ -2,6 +2,8 @@
 <html>
 <head>
 	<title>Multiplayer Snake</title>
+	<link rel="stylesheet" type="text/css" href="client/css/style.css">
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.css">
 	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
 
@@ -17,11 +19,28 @@
 	<div id="app">
 		<!-- Element that contains all elements for home page -->
 		<template id="home-view" v-if="page === 'home-view'">
-			<input id="player-name" type="text" placeholder="Enter a name" v-model="playerName">
-			<button ref="playButton" v-on:click="joinAnyLobby()">Play!</button>
-			<button id="create-button" v-on:click="createLobby()">Create Lobby</button>
-			<input id="join-input" type="text" placeholder="Lobby ID" v-model="joinLobbyText">
-			<button id="join-button" v-on:click="joinLobby(joinLobbyText)">Join Lobby</button>
+			<div class="loginBox container card">
+				<header class="card-header">
+					<p class="card-header-title">Multiplayer Snake Login</p>
+				</header>
+				<div class="card-content">
+					<div class="content">
+						<div class="columns pad-vert">
+							<input id="player-name" class="input" type="text" placeholder="Enter a name" v-model="playerName">
+						</div>
+						<div class="columns pad-vert">
+							<button class="button is-fullwidth is-success" ref="playButton" v-on:click="joinAnyLobby()">Play!</button>
+						</div>
+						<div class="columns pad-vert">
+							<button id="create-button" class="button is-fullwidth is-primary" v-on:click="createLobby()">Create Lobby</button>
+						</div>
+						<div class="columns pad-vert">
+							<input id="join-input" class="input column is-three-quarters" type="text" placeholder="Lobby ID" v-model="joinLobbyText">
+							<button id="join-button" class="button is-fullwidth is-link mar-left" v-on:click="joinLobby(joinLobbyText)">Join Lobby</button>
+						</div>
+					</div>
+				</div>
+			</div>
 		</template>
 
 		<!-- Element that contains all elements for lobby page -->
