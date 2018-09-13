@@ -40,6 +40,10 @@ function init() {
 			
 			updateLobbyData: function(data) {
 				this.players = data.players;
+				if (this.players[socket.id].isHost) {
+					this.$refs.startGameButton.disabled = false;
+				}
+				app.$refs.lobbyLink.value = window.location.href + '?lobby=' + data.lobbyID;
 			},
 
 			startLobby: function() {
@@ -78,9 +82,6 @@ function init() {
 			console.log('update game');
 			app.updateLobbyData(data);
 			game.updateData(data);
-			if (data.players[socket.id].isHost) {
-				app.$refs.startGameButton.disabled = false;
-			}
 		});
 	}
 
@@ -95,7 +96,6 @@ function init() {
 		app.page = 'lobby-view';
 		Vue.nextTick(function () {
 			app.updateLobbyData(data);
-			app.$refs.lobbyLink.value = window.location.href + '?lobby=' + data.lobbyID;
 		});
 	}
 
@@ -113,7 +113,6 @@ function init() {
 			app.page = 'lobby-view';
 			Vue.nextTick(function () {
 				app.updateLobbyData(data);
-				app.$refs.lobbyLink.value = window.location.href + '?lobby=' + data.lobbyID;
 			});
 		}
 
