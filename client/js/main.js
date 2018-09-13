@@ -75,7 +75,7 @@ function init() {
 		});
 
 		socket.on('update-game', function(data) {
-			console.log('update game')
+			console.log('update game');
 			app.updateLobbyData(data);
 			game.updateData(data);
 			if (data.players[socket.id].isHost) {
