@@ -44,8 +44,13 @@ function init() {
 
 			startLobby: function() {
 				socket.emit('lobby-start');
+			},
+
+			copyLobbyLink: function() {
+				this.$refs.lobbyLink.select();
+				document.execCommand("copy");
 			}
-	  }
+		}
 	});
 
 	var socket = io.connect();
