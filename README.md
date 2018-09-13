@@ -10,6 +10,10 @@ Navigate into the project directory
 ```
 cd multiplayer-snake
 ```
+Install dependencies
+```
+npm install
+```
 Run node.js
 ```
 node index.js
