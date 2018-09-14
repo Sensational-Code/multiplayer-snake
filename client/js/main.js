@@ -40,11 +40,13 @@ function init() {
 			
 			updateLobbyData: function(data) {
 				this.players = data.players;
-				if (this.players[socket.id].isHost) {
-					this.$refs.startGameButton.disabled = false;
-				}
-				if (data.lobbyID) {
-					this.$refs.lobbyLink.value = window.location.href + '?lobby=' + data.lobbyID;
+				if (this.page === 'lobby-view') {
+					if (this.players[socket.id].isHost) {
+						this.$refs.startGameButton.disabled = false;
+					}
+					if (data.lobbyID) {
+						this.$refs.lobbyLink.value = window.location.href + '?lobby=' + data.lobbyID;
+					}
 				}
 			},
 
