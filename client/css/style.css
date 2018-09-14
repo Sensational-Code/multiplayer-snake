@@ -6,6 +6,10 @@ html, body {
 	max-width: 50% !important;
 }
 
+.lobby-link {
+	text-align: center;
+}
+
 .pad-vert {
 	padding-top: 5px;
 	padding-bottom: 5px;
