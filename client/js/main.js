@@ -44,7 +44,7 @@ function init() {
 					this.$refs.startGameButton.disabled = false;
 				}
 				if (data.lobbyID) {
-					app.$refs.lobbyLink.value = window.location.href + '?lobby=' + data.lobbyID;
+					this.$refs.lobbyLink.value = window.location.href + '?lobby=' + data.lobbyID;
 				}
 			},
 
