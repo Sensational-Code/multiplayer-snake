@@ -45,17 +45,29 @@
 
 		<!-- Element that contains all elements for lobby page -->
 		<template id="lobby-view" v-if="page === 'lobby-view'">
-			<div id="player-list-container">
-				<h2>Players in lobby:</h2>
-				<div ref="playerList" v-for="player in players">
-					<h2 v-bind:style="{ color: player.color }">
-						{{ player.name + (player.isHost ? ' (host)' : '') }}
-					</h2>
+			<div id="player-list-container" class="container card column">
+				<header class="card-header">
+					<p class="card-header-title">Players in lobby:</p>
+				</header>
+				<div class="card-content">
+					<div class="content">
+						<div class="columns" ref="playerList" v-for="player in players">
+							<h3 class="header is-3 column" v-bind:style="{ color: player.color }">
+								{{ player.name + (player.isHost ? ' (host)' : '') }}
+							</h3>
+						</div>
+					</div>
+						<button disabled class="button" ref="startGameButton" v-on:click="startLobby()">Start game</button>
 				</div>
-				<button disabled ref="startGameButton" v-on:click="startLobby()">Start game</button>
-				<h2>Invite your friends!</h2>
-				<input ref="lobbyLink" readonly>
-				<button v-on:click="copyLobbyLink()">Copy</button>
+			</div>
+			<div class="container">
+				<div class="column">
+					<h2 class="header">Invite your friends!</h2>
+				</div>
+				<div class="columns">
+					<input class="input column is-three-quarters" ref="lobbyLink" readonly>
+					<button class="button is-fullwidth" v-on:click="copyLobbyLink()">Copy</button>
+				</div>
 			</div>
 		</template>
 
