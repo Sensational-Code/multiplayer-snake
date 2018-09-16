@@ -1,3 +1,5 @@
+const PORT = process.env.PORT || 4444;
+
 const express = require('express');
 const app = express();
 const server = require('http').createServer(app);
@@ -161,7 +163,6 @@ io.sockets.on('connection', function(socket) {
 	// if yes, update the "new" direction
 	// if not, don't do anything/send wrong way response
 
-var port = 4444;
-server.listen(port, function() {
-	console.log('Server started on port ' + port + '!');
+server.listen(PORT, function() {
+	console.log(`Server started on port ${PORT}!`);
 });
