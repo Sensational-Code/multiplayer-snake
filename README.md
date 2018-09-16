@@ -1,6 +1,8 @@
 # multiplayer-snake
 A multiplayer version of the game snake built using Node.js, Socket.io, and Vue.js (in development)
 
+#### [Try it here](https://nodejs-multiplayer-snake.herokuapp.com/)
+
 ## Install
 Clone this repo to your local machine
 ```
