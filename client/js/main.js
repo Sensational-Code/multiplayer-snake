@@ -62,6 +62,11 @@ function init() {
 	});
 
 	var socket = io.connect();
+	socket.on('disconnect', function() {
+		alert('Server connection lost!');
+		app.page = 'home-view';
+	});
+
 	var game = new SnakeGame();
 
 	var urlParams = helpers.getAllUrlParams(window.location.href);
