@@ -14,7 +14,7 @@ class Candy {
 		for (var i = 0; i < excludedBlocks.length; ++i) {
 			var block = excludedBlocks[i];
 			if (this.x === block.x && this.y === block.y) {
-				this.findNewSpot(this.board.width, this.board.height, excludedBlocks);
+				this.findNewSpot(excludedBlocks);
 			}
 		}
 
