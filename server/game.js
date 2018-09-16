@@ -15,7 +15,7 @@ class Game {
 		let allPlayerBlocks = [];
 		for (let playerIndex in this.players) {
 			let player = this.players[playerIndex];
-			allPlayerBlocks.concat(player.blocks);
+			allPlayerBlocks = allPlayerBlocks.concat(player.blocks);
 		}
 		this.candy = new Candy(this.board).findNewSpot(allPlayerBlocks);
 	}
