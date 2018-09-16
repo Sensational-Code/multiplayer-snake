@@ -56,7 +56,7 @@ function init() {
 
 			copyLobbyLink: function() {
 				this.$refs.lobbyLink.select();
-				document.execCommand("copy");
+				document.execCommand('copy');
 			}
 		}
 	});
