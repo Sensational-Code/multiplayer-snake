@@ -63,8 +63,10 @@ function init() {
 
 	var socket = io.connect();
 	socket.on('disconnect', function() {
-		alert('Server connection lost!');
-		app.page = 'home-view';
+		if (app.page !== 'home-view') {
+			alert('Server connection lost!');
+			app.page = 'home-view';
+		}
 	});
 
 	var game = new SnakeGame();
