@@ -1,0 +1,9 @@
+# This file exists mainly just to improve readability on GitHub
+
+# Top-most EditorConfig file
+root = true
+
+# Enforce 4 space indentation
+[*.{js,jsx,html,sass,scss,css}]
+charset = utf-8
+indent_size = 4
