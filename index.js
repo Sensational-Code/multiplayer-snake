@@ -126,6 +126,8 @@ io.sockets.on('connection', function(socket) {
 
 	socket.player = new Player(socket.id);
 
+	console.log(`New connection with id ${socket.id}`);
+
 	socket.on('create-lobby', createLobby);
 
 	socket.on('join-any-lobby', joinAnyLobby);
