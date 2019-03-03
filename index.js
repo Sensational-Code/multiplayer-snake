@@ -17,12 +17,24 @@ app.use('/client/', express.static(__dirname + '/client/'));
 
 
 function createLobby(data) {
+
+	if (!data) {
+		console.error('No data! Invalid create-lobby request!');
+		return;
+	}
+
 	var lobby = lobbyManager.createLobby();
 	data.id = lobby.id;
 	joinLobby.bind(this, data)();
 }
 
 function joinLobby(data) {
+
+	if (!data) {
+		console.error('No data! Invalid join-lobby request!');
+		return;
+	}
+
 	let { id, playerName } = data;
 	var lobby = lobbyManager.getLobby(id);
 	if (!lobby) {
