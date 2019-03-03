@@ -23,6 +23,11 @@ function createLobby(data) {
 		return;
 	}
 
+	// Check if this player is already in a lobby
+	if (this.lobby) {
+		disconnect.bind(this)();
+	}
+
 	var lobby = lobbyManager.createLobby();
 	data.id = lobby.id;
 	joinLobby.bind(this, data)();
