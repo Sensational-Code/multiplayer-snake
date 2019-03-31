@@ -3,7 +3,7 @@ const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 
-const LobbyController = require('./controllers/LobbyController.js');
+const LobbyController = require('./server/controllers/LobbyController.js');
 let lobbyController = new LobbyController(io);
 
 
