@@ -1,11 +1,11 @@
-const Lobby = require('./../lobby.js');
+const LobbyManager = require('./../lobbymanager.js');
 const Player = require('./../player.js');
 
 class LobbyController {
 
 	constructor(io) {
 		this.io = io;
-		this.lobbyManager = require('./../lobbymanager.js')(io);
+		this.lobbyManager = new LobbyManager(io);
 
 		io.sockets.on('connection', (socket) => {
 

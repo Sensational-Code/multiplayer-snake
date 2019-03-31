@@ -27,6 +27,4 @@ class LobbyManager {
 	}
 };
 
-module.exports = function(io) {
-	return new LobbyManager(io);
-}
+module.exports = LobbyManager;
