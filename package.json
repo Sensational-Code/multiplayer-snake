@@ -9,9 +9,11 @@
   "license": "",
   "description": "",
   "dependencies": {
+    "capitalize": "^2.0.0",
     "crypto": "^1.0.1",
     "express": "^4.16.3",
     "http": "0.0.0",
+    "project-name-generator": "^2.1.6",
     "randomcolor": "^0.5.3",
     "socket.io": "^2.1.1"
   }
