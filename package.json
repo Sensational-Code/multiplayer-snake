@@ -9,12 +9,12 @@
   "license": "",
   "description": "",
   "dependencies": {
-    "capitalize": "^2.0.0",
+    "capitalize": "^2.0.4",
     "crypto": "^1.0.1",
-    "express": "^4.16.3",
+    "express": "^4.17.1",
     "http": "0.0.0",
-    "project-name-generator": "^2.1.6",
-    "randomcolor": "^0.5.3",
+    "project-name-generator": "^2.1.9",
+    "randomcolor": "^0.5.4",
     "socket.io": "^2.4.1"
   }
 }
