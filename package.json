@@ -16,6 +16,6 @@
     "http": "0.0.0",
     "project-name-generator": "^2.1.9",
     "randomcolor": "^0.5.4",
-    "socket.io": "^2.4.1"
+    "socket.io": "^2.5.0"
   }
 }
